@@ -27,10 +27,14 @@ class ItemController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        */
+    public function store(Request $request) {
+        $item = new Item();
+        $item->name = $request->input('name');
+        $item->description = $request->input('description');
+        $item->save();
+
+        return redirect()->route('items.index');
     }
 
     /**
@@ -44,11 +48,11 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
-
+    public function edit($id) {
+            $item = Item::find($id);
+            return view('items.edit', compact('item'));
+        }
+        
     /**
      * Update the specified resource in storage.
      */
@@ -60,8 +64,8 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy(Item $item) {
+        $item->delete();
+        return redirect()->route('items.index');
     }
 }
