@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
-
+use App\Models\Category;
 use App\Models\Item;
 
 class ItemController extends Controller
@@ -15,16 +15,17 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
-        return view('items.index', compact('items') );
+     $items = Item::with('category')->get();
+    return view('items.index', compact('items'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create() 
     {
-        return view('items.create');
+    $categories = Category::all();
+    return view('items.create', compact('categories'));
     }
 
     /**
@@ -54,23 +55,29 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id) {
-            $item = Item::find($id);
-            return view('items.edit', compact('item'));
-        }
+    public function edit(Item $item) 
+    {
+    $categories = Category::all();
+    return view('items.edit', compact('item', 'categories'));
+    }
+        
         
     /**
      * Update the specified resource in storage.
      */
     
        // De Request class wordt vervangen door de UpdateItemRequest
-    public function update(UpdateItemRequest $request, Item $item) {
-           $validated = $request->validated();
+    public function update(UpdateItemRequest $request, $id)
+    {
+    $validated = $request->validated();
 
-        // Werkt het item bij met de gevalideerde gegevens
-        $item->update($validated);
+    // Haalt het item op met het gegeven ID
+    $item = Item::findOrFail($id);
 
-        return redirect()->route('items.index');
+    // Werkt het item bij met de gevalideerde gegevens
+    $item->update($validated);
+
+    return redirect()->route('items.index')->with('success', 'Item succesvol bijgewerkt.');
     }
     
     
