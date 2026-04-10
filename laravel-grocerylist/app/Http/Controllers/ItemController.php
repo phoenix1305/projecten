@@ -5,7 +5,6 @@ use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Models\Category;
 use App\Models\Item;
-use App\Models\Category;
 
 class ItemController extends Controller
 {
