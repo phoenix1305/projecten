@@ -19,6 +19,12 @@
         @endforeach
         </select>
         <br>
+        <label for="category">Categorie:</label>
+        <select name="category_id" id="category" required>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
         <button type="submit">Opslaan</button>
 </form>
 @endsection

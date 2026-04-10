@@ -18,7 +18,6 @@
                 <tr>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->description }}</td>
-                    <td>{{ $item->category->name }}</td>
                     <td>
                         <form action="{{ route('items.destroy', $item->id) }}" method="POST">
                             @csrf
