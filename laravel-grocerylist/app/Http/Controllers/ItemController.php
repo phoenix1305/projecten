@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 
 use App\Models\Item;
+use App\Models\Category;
 
 class ItemController extends Controller
 {
@@ -15,16 +14,19 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
-        return view('items.index', compact('items') );
+        $items = Item::with('category')->get();
+        return view('items.index', compact('items'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return view('items.create');
+    {   
+        
+        $categories = Category::all();
+        return view('items.create', compact('categories'));
+
     }
 
     /**
@@ -54,10 +56,11 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id) {
-            $item = Item::find($id);
-            return view('items.edit', compact('item'));
-        }
+    public function edit(Item $item) {
+    $categories = Category::all();
+    return view('items.edit', compact('item', 'categories'));
+    }
+        
         
     /**
      * Update the specified resource in storage.
